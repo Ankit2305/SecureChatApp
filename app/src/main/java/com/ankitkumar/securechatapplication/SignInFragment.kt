@@ -110,7 +110,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                         putString(AUTH_CODE,phoneNo.toString())
                         apply()
                     }
-                    view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatFragment)
+                    view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
 
                     val user = task.result?.user
                 } else {

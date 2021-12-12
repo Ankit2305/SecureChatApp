@@ -1,15 +1,20 @@
 package com.ankitkumar.securechatapplication
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatBinding
+import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
 import com.ankitkumar.securechatapplication.network.GsonHelper
 import com.ankitkumar.securechatapplication.network.WebSocketHelper
+import com.ankitkumar.securechatapplication.util.AUTH_CODE
+import com.ankitkumar.securechatapplication.util.MessageType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.Response
@@ -46,6 +51,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
 
         lifecycleScope.launch {
             webSocket.connect()
+            setUpAuthorization()
         }
 
         bindings.apply {
@@ -57,13 +63,31 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                 messageEditText.setText("")
                 if(messageText.isNotBlank()) {
                     val message = Message(
+                        MessageType.MESSAGE,
                         UUID.randomUUID(),
                         messageText,
-                        true
+                        true,
+                        "1234"    //no receiver is set for now ,
                     )
                     sendMessage(message)
                 }
             }
+        }
+
+    }
+
+    private fun setUpAuthorization() {
+        val sharedPref = activity?.getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE)
+        val authCode = sharedPref?.getString(AUTH_CODE,"12345")
+
+        if(authCode!=null){
+            val authJson = Auth(
+                MessageType.AUTH,
+                authCode
+            )
+            val json = GsonHelper.getJson(authJson)
+            Log.d("ChatFragment",json)
+            webSocket.send(json)
         }
 
     }
@@ -78,7 +102,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     }
 
     private fun sendMessage(message: Message) {
-        val messageJson = GsonHelper.getJsonFromMessage(message)
+        val messageJson = GsonHelper.getJson(message)
         webSocket.send(messageJson)
         message.setAsSendMessage()
         val messages = ArrayList(chatAdapter.currentList)

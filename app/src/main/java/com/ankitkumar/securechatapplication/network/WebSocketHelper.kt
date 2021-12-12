@@ -2,13 +2,11 @@ package com.ankitkumar.securechatapplication.network
 
 import android.content.Context
 import com.ankitkumar.securechatapplication.util.WEB_SOCKET_URL
-import com.ankitkumar.securechatapplication.util.WebSocketConnection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
-import okio.ByteString
 
 class WebSocketHelper(val webSocketListener: WebSocketListener, val context: Context) {
     private lateinit var webSocket: WebSocket
@@ -30,8 +28,8 @@ class WebSocketHelper(val webSocketListener: WebSocketListener, val context: Con
                 connectionInProgress = false
             }
 
-            override fun onMessage(webSocket: WebSocket, json: String) {
-                webSocketListener.onMessage(webSocket, json)
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                webSocketListener.onMessage(webSocket, text)
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {

@@ -16,7 +16,8 @@ object GsonHelper {
         }
     }
 
-    fun getJsonFromMessage(message: Message): String {
-        return gson.toJson(message)
+    fun getJson(objects: Any): String {
+        return gson.toJson(objects)
     }
+
 }

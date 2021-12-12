@@ -18,4 +18,14 @@
             android:id="@+id/action_signInFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/chatListFragment"
+        android:name="com.ankitkumar.securechatapplication.ChatListFragment"
+        android:label="fragment_chat_list"
+        tools:layout="@layout/activity_main" >
+        <action
+            android:id="@+id/action_chatListFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
 </navigation>

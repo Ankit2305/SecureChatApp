@@ -15,8 +15,8 @@
         android:label="fragment_sign_in"
         tools:layout="@layout/activity_main" >
         <action
-            android:id="@+id/action_signInFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
+            android:id="@+id/action_signInFragment_to_chatListFragment"
+            app:destination="@id/chatListFragment" />
     </fragment>
 
     <fragment

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "417330325801",
+    "project_id": "chatapplication-49166",
+    "storage_bucket": "chatapplication-49166.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:417330325801:android:6269c7982c50f5b6c52f38",
+        "android_client_info": {
+          "package_name": "com.ankitkumar.securechatapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "417330325801-2e4rf67ob8tuolp0be7b818spgcki1pr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvczCrVHwdfnQAT1asf2H7F5Lruc1-Hk8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "417330325801-2e4rf67ob8tuolp0be7b818spgcki1pr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

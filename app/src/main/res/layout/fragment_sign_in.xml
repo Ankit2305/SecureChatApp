@@ -7,6 +7,20 @@
     tools:context="SignInFragment"
     android:layout_margin="10dp">
 
+    <!--Edittext for getting users Name-->
+    <EditText
+        android:id="@+id/et_Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Enter your name"
+        android:importantForAutofill="yes"
+        android:inputType="text" />
+
     <!--Edittext for getting users phone number-->
     <EditText
         android:id="@+id/et_PhoneNumber"
@@ -19,6 +33,7 @@
         android:layout_marginBottom="10dp"
         android:hint="Enter your phone"
         android:importantForAutofill="no"
+        android:layout_below="@id/et_Name"
         android:inputType="phone" />
 
     <!--Button for getting OTP-->

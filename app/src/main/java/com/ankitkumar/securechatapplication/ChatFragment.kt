@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatBinding
 import com.ankitkumar.securechatapplication.model.Auth
@@ -33,17 +34,19 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     lateinit var bindings: FragmentChatBinding
     lateinit var webSocket: WebSocketHelper
     lateinit var chatAdapter: ChatAdapter
-    private val model: SharedViewModel by activityViewModels()
-     var receiverAuth : String? = null
+    //private val model: SharedViewModel by activityViewModels()
+    var receiverAuth : String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindings = FragmentChatBinding.bind(view)
 
-        val args = this.arguments
-        bindings.viewReceiverDetails.nameTextView.text = args?.get("name").toString()
-        bindings.viewReceiverDetails.phoneNumberTextView.text = args?.get("phoneNo").toString()
-        receiverAuth = args?.get("UID").toString()
+        val args by navArgs<ChatFragmentArgs>()
+        val user = args.user
+
+        bindings.viewReceiverDetails.nameTextView.text = user.name
+        bindings.viewReceiverDetails.phoneNumberTextView.text = user.phoneNo
+        receiverAuth = user.uid
 
 //        model.selected.observe(this.viewLifecycleOwner,{
 //            if(it!=null){
@@ -133,8 +136,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     }
 
     fun showToast(message: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        try {
+            lifecycleScope.launch(Dispatchers.Main) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

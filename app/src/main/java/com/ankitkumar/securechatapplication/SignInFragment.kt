@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.ankitkumar.securechatapplication.Daos.UserDao
 import com.ankitkumar.securechatapplication.databinding.FragmentSignInBinding
 import com.ankitkumar.securechatapplication.model.User
@@ -31,6 +32,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
         mAuth = FirebaseAuth.getInstance()
+
         if(mAuth.currentUser!=null){
             view.findNavController().navigate(R.id.action_signInFragment_to_chatListFragment)
         }

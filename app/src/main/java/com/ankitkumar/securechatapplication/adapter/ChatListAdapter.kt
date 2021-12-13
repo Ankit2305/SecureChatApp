@@ -7,35 +7,40 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ankitkumar.securechatapplication.R
+import com.ankitkumar.securechatapplication.databinding.SingleChatListItemBinding
 import com.ankitkumar.securechatapplication.model.User
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
-class ChatListAdapter(options: FirestoreRecyclerOptions<User>) : FirestoreRecyclerAdapter<User, ChatListAdapter.ChatListViewHolder>(
+class ChatListAdapter(options: FirestoreRecyclerOptions<User>, val onItemClick: OnItemClickListener) : FirestoreRecyclerAdapter<User, ChatListAdapter.ChatListViewHolder>(
     options
 ) {
-    var onItemClick: ((User) -> Unit)? = null
 
-    inner class ChatListViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
-        val displayPicture = itemView.findViewById<ImageView>(R.id.displayPictureImageView)
-        val username = itemView.findViewById<TextView>(R.id.nameTextView)
-        val phoneNumber = itemView.findViewById<TextView>(R.id.phoneNumberTextView)
-        val lastMessage = itemView.findViewById<TextView>(R.id.lastMessageTextView)
+    inner class ChatListViewHolder(val bindings : SingleChatListItemBinding) : RecyclerView.ViewHolder(bindings.root){
 
-        init {
-            itemView.setOnClickListener {
-                onItemClick?.invoke(getItem(adapterPosition))
+        fun bind(user: User) {
+            bindings.apply {
+                //TODO: Add last message support if required
+                nameTextView.text = user.name
+                phoneNumberTextView.text = user.phoneNo
+                displayPictureImageView.setImageResource(R.drawable.icon_display_picture)
+                root.setOnClickListener {
+                    onItemClick.onClick(user)
+                }
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
-        return ChatListViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_chat_list_item,parent,false))
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.single_chat_list_item,parent,false)
+        return ChatListViewHolder(SingleChatListItemBinding.bind(view))
     }
 
     override fun onBindViewHolder(holder: ChatListViewHolder, position: Int, user: User) {
-        holder.displayPicture.setImageResource(R.drawable.icon_display_picture)
-        holder.username.text = user.name
-        holder.phoneNumber.text = "+91 ${user.phoneNo}"        //no last message support for now
+        holder.bind(user)
+    }
+
+    interface OnItemClickListener {
+        fun onClick(user: User)
     }
 }

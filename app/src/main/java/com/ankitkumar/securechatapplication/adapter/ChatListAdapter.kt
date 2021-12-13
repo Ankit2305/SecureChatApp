@@ -14,12 +14,19 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 class ChatListAdapter(options: FirestoreRecyclerOptions<User>) : FirestoreRecyclerAdapter<User, ChatListAdapter.ChatListViewHolder>(
     options
 ) {
+    var onItemClick: ((User) -> Unit)? = null
 
-    class ChatListViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
+    inner class ChatListViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
         val displayPicture = itemView.findViewById<ImageView>(R.id.displayPictureImageView)
         val username = itemView.findViewById<TextView>(R.id.nameTextView)
         val phoneNumber = itemView.findViewById<TextView>(R.id.phoneNumberTextView)
         val lastMessage = itemView.findViewById<TextView>(R.id.lastMessageTextView)
+
+        init {
+            itemView.setOnClickListener {
+                onItemClick?.invoke(getItem(adapterPosition))
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {

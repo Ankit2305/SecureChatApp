@@ -24,12 +24,13 @@ class ChatRepository(val database: ChatDatabase) {
     }
 
     suspend fun getMessageCount(userId: String): LiveData<Int> {
-        var messageCount = 0
+        lateinit var messageCount: LiveData<Int>
         coroutineScope {
             withContext(Dispatchers.IO) {
                 messageCount = database.messageDao().getMessageCount(userId)
             }
         }
+        return messageCount
     }
 
 }

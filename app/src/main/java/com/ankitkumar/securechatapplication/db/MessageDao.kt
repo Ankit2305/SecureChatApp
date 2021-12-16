@@ -20,6 +20,6 @@ interface MessageDao {
     fun getMessages(userId: String): LiveData<List<Message>>
 
     @Query("SELECT COUNT(*) FROM message WHERE sender = :userId OR `to` = :userId")
-    fun getMessageCount(userId: String)
+    fun getMessageCount(userId: String): LiveData<Int>
 
 }

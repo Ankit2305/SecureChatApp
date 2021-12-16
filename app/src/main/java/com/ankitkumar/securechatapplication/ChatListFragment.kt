@@ -11,8 +11,10 @@ import com.ankitkumar.securechatapplication.Daos.UserDao
 import com.ankitkumar.securechatapplication.adapter.ChatListAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatListBinding
 import com.ankitkumar.securechatapplication.model.User
+import com.ankitkumar.securechatapplication.network.WebSocketWrapper
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import org.koin.android.ext.android.inject
 
 class ChatListFragment: Fragment(R.layout.fragment_chat_list) {
 
@@ -20,10 +22,12 @@ class ChatListFragment: Fragment(R.layout.fragment_chat_list) {
     lateinit var chatListAdapter : ChatListAdapter
     //private val viewModel : SharedViewModel by viewModels()
     lateinit var navController: NavController
+    val webSocket by inject<WebSocketWrapper>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindings = FragmentChatListBinding.bind(view)
+        webSocket.authorize(requireContext())
         navController = findNavController()
         bindings.toolbar.apply {
             titleTextView.text = getString(R.string.display_title)

@@ -3,6 +3,7 @@ package com.ankitkumar.securechatapplication.network
 import android.content.Context
 import android.util.Log
 import com.ankitkumar.securechatapplication.R
+import com.ankitkumar.securechatapplication.crypto.AES
 import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
 import com.ankitkumar.securechatapplication.repository.ChatRepository
@@ -65,7 +66,8 @@ class WebSocketWrapper(val repository: ChatRepository) {
 
     private fun handleMessage(json: String) {
         try {
-            val message = GsonHelper.getMessageFromJson(json)
+            val encryptedMessage = GsonHelper.getEncryptedMessageFromJson(json)
+            val message = encryptedMessage?.toMessage()
             webSocketScope.launch {
                 message?.let {
                     repository.insertMessage(message)
@@ -79,15 +81,28 @@ class WebSocketWrapper(val repository: ChatRepository) {
     fun send(message: Message) {
         webSocketScope.launch {
             Log.i("WebSocketTag", "send: $message")
-            val json = GsonHelper.getJson(message)
+            val encryptedMessage = message.encryptMessage()
+            val json = GsonHelper.getJson(encryptedMessage)
             send(json)
             message.setAsSendMessage()
             repository.insertMessage(message)
         }
     }
 
-    fun send(message: String) {
-        webSocket.send(message)
+    fun send(json: String) {
+        Log.i("WebSocketTag", "send: $json")
+        webSocket.send(json)
+    }
+
+    private fun encrypt(json: String): String {
+        val encryptedJson = AES.encrypt(json) ?: ""
+        Log.i("WebSocketTag", "encrypt: $encryptedJson")
+        return encryptedJson
+    }
+    private fun decrypt(encryptedJson: String): String {
+        val json = AES.decrypt(encryptedJson) ?: ""
+        Log.i("WebSocketTag", "encrypt: $json")
+        return json
     }
 
     fun close() {

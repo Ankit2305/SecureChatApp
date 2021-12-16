@@ -3,14 +3,20 @@ package com.ankitkumar.securechatapplication
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatBinding
 import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
+import com.ankitkumar.securechatapplication.model.User
 import com.ankitkumar.securechatapplication.network.GsonHelper
 import com.ankitkumar.securechatapplication.network.WebSocketHelper
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
@@ -28,10 +34,28 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     lateinit var bindings: FragmentChatBinding
     lateinit var webSocket: WebSocketHelper
     lateinit var chatAdapter: ChatAdapter
+    //private val model: SharedViewModel by activityViewModels()
+    var receiverAuth : String? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindings = FragmentChatBinding.bind(view)
+
+        val args by navArgs<ChatFragmentArgs>()
+        val user = args.user
+
+        bindings.viewReceiverDetails.nameTextView.text = user.name
+        bindings.viewReceiverDetails.phoneNumberTextView.text = user.phoneNo
+        receiverAuth = user.uid
+
+//        model.selected.observe(this.viewLifecycleOwner,{
+//            if(it!=null){
+//                receiverAuth = it.uid
+//                Log.d("ChatFragment","1111111111111111111 receiver uth : $receiverAuth")
+//            }else
+//                Log.d("ChatFragment"," viewmodel is null")
+//        })
+
         webSocket = WebSocketHelper(object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 showToast("Connected...")
@@ -61,13 +85,14 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             sendButton.setOnClickListener {
                 val messageText = messageEditText.text.toString().trim()
                 messageEditText.setText("")
-                if(messageText.isNotBlank()) {
+                Log.d("ChatFragment"," receiver uth : $receiverAuth")
+                if(messageText.isNotBlank() && receiverAuth!=null) {
                     val message = Message(
                         MessageType.MESSAGE,
                         UUID.randomUUID(),
                         messageText,
                         true,
-                        "1234"    //no receiver is set for now ,
+                        receiverAuth!!
                     )
                     sendMessage(message)
                 }
@@ -111,8 +136,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     }
 
     fun showToast(message: String) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        try {
+            lifecycleScope.launch(Dispatchers.Main) {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

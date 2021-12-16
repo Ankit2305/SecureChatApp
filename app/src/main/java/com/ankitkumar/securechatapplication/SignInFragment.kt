@@ -8,11 +8,15 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Toast
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.ankitkumar.securechatapplication.Daos.UserDao
 import com.ankitkumar.securechatapplication.databinding.FragmentSignInBinding
+import com.ankitkumar.securechatapplication.model.User
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
 import java.util.concurrent.TimeUnit
 
 
@@ -28,6 +32,10 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
         mAuth = FirebaseAuth.getInstance()
+
+        if(mAuth.currentUser!=null){
+            view.findNavController().navigate(R.id.action_signInFragment_to_chatListFragment)
+        }
         setViewClickListener()
 
         callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -76,11 +84,16 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
 
         binding.btnGetOtp.setOnClickListener {
             val mobilNo = binding.etPhoneNumber.text
-            if(mobilNo.isNotEmpty() && mobilNo.length==10){
+            val name = binding.etName.text
+            if(mobilNo.isNotEmpty() && mobilNo.length==10 && name.isNotEmpty()){
                 val phone = "+91$mobilNo"
                 sendVerificationCode(phone)
-            }else
-                Toast.makeText(context,"Please enter a valid Mobile Number.",Toast.LENGTH_SHORT).show()
+            }else {
+                if(name.isEmpty())
+                    Toast.makeText(context, "Please enter your name", Toast.LENGTH_SHORT).show()
+                else
+                    Toast.makeText(context, "Please enter valid Phone number", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.btnVerify.setOnClickListener {
@@ -104,15 +117,9 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     Toast.makeText(context,"SignIn : success",Toast.LENGTH_SHORT).show()
-                    val phoneNo = binding.etPhoneNumber.text
-                    val sharedPref = activity?.getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE) ?: return@addOnCompleteListener
-                    with (sharedPref.edit()) {
-                        putString(AUTH_CODE,phoneNo.toString())
-                        apply()
-                    }
-                    view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
 
                     val user = task.result?.user
+                    updateUI(user)
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -131,6 +138,23 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             .setCallbacks(callbacks)          // OnVerificationStateChangedCallbacks
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun updateUI(currentUser : FirebaseUser?){
+        if(currentUser!=null){
+            val user  = User(currentUser.uid,
+                binding.etName.text.toString(),
+                binding.etPhoneNumber.text.toString()
+            )
+            val sharedPref = activity?.getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE) ?: return
+            with (sharedPref.edit()) {
+                putString(AUTH_CODE,user.uid)
+                apply()
+            }
+
+            UserDao().addUser(user)
+            view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
+        }
     }
 
 

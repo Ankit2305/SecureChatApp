@@ -4,4 +4,5 @@
     <dimen name="dim_50">50dp</dimen>
     <dimen name="dim_70">70dp</dimen>
     <dimen name="dim_8">8dp</dimen>
+    <dimen name="dim_4">4dp</dimen>
 </resources>

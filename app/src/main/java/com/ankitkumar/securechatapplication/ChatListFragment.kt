@@ -25,6 +25,10 @@ class ChatListFragment: Fragment(R.layout.fragment_chat_list) {
         super.onViewCreated(view, savedInstanceState)
         bindings = FragmentChatListBinding.bind(view)
         navController = findNavController()
+        bindings.toolbar.apply {
+            titleTextView.text = getString(R.string.display_title)
+            logoImageView.setImageResource(R.drawable.ic_logo)
+        }
         setupChatListAdapter()
     }
 

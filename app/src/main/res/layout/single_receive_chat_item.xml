@@ -14,24 +14,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:padding="4dp">
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:backgroundTint="#4a6"
-            app:cardCornerRadius="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/messageTextView"
-            app:layout_constraintEnd_toEndOf="@+id/messageTextView"
-            app:layout_constraintStart_toStartOf="@+id/messageTextView"
-            app:layout_constraintTop_toTopOf="@+id/messageTextView" />
 
         <TextView
             android:id="@+id/messageTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="12dp"
+            android:background="@drawable/received_message_background"
             tools:text="Hello world"
-            android:textColor="@color/white"
+            android:textColor="@color/color_5b637e"
             android:translationZ="2dp"
+            android:lineSpacingMultiplier="1.3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

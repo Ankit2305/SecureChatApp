@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
 
-class WebSocketHelper(val webSocketListener: WebSocketListener, val context: Context) {
+class WebSocketHelper(val webSocketListener: WebSocketListener, val context: Context? = null) {
     private lateinit var webSocket: WebSocket
     private val client: OkHttpClient = OkHttpClient()
     private var isConnected = false

@@ -7,4 +7,11 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="color_f6f7fb">#f3f8fe</color> <!-- Received Message Background Color-->
+    <color name="color_0040fe">#7c80ee</color> <!-- Sent Message Background Color-->
+    <color name="color_5b637e">#8687a7</color> <!-- Received Text color -->
+    <color name="color_dee8ff">#dbdbfa</color> <!-- Sent Message color-->
+
+    <color name="color_b8bbc7">#b8bbc7</color> <!-- -->
 </resources>

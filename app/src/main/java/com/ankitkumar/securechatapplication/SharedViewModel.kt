@@ -1,7 +1,6 @@
 package com.ankitkumar.securechatapplication
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ankitkumar.securechatapplication.model.User
 

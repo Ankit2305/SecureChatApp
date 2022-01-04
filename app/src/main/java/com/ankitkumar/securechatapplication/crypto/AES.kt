@@ -11,28 +11,21 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 internal object AES {
-    // Class private variables
     private val SECRET_KEY = "my_super_secret_key_ho_ho_ho"
     private val SALT = "ssshhhhhhhhhhh!!!!"
 
-    // This method use to encrypt to string
     fun encrypt(strToEncrypt: String): String? {
         try {
-
-            // Create default byte array
             val iv = byteArrayOf(
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0
             )
             val ivspec = IvParameterSpec(iv)
 
-            // Create SecretKeyFactory object
             val factory = SecretKeyFactory.getInstance(
                 "PBKDF2WithHmacSHA256"
             )
 
-            // Create KeySpec object and assign with
-            // constructor
             val spec: KeySpec = PBEKeySpec(
                 AES.SECRET_KEY.toCharArray(), AES.SALT.toByteArray(),
                 65536, 256
@@ -48,7 +41,7 @@ internal object AES {
                 Cipher.ENCRYPT_MODE, secretKey,
                 ivspec
             )
-            // Return encrypted string
+
             return Base64.getEncoder().encodeToString(
                 cipher.doFinal(
                     strToEncrypt.toByteArray(
@@ -65,26 +58,24 @@ internal object AES {
         return null
     }
 
-    // This method use to decrypt to string
+
     fun decrypt(strToDecrypt: String?): String? {
         try {
 
-            // Default byte array
+
             val iv = byteArrayOf(
                 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0
             )
-            // Create IvParameterSpec object and assign with
-            // constructor
+
             val ivspec = IvParameterSpec(iv)
 
-            // Create SecretKeyFactory Object
+
             val factory = SecretKeyFactory.getInstance(
                 "PBKDF2WithHmacSHA256"
             )
 
-            // Create KeySpec object and assign with
-            // constructor
+
             val spec: KeySpec = PBEKeySpec(
                 AES.SECRET_KEY.toCharArray(), AES.SALT.toByteArray(),
                 65536, 256
@@ -100,7 +91,7 @@ internal object AES {
                 Cipher.DECRYPT_MODE, secretKey,
                 ivspec
             )
-            // Return decrypted string
+
             return String(
                 cipher.doFinal(
                     Base64.getDecoder().decode(strToDecrypt)

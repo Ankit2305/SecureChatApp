@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/displayPictureContainer"
-        android:layout_width="@dimen/dim_70"
-        android:layout_height="@dimen/dim_70"
+        android:layout_width="@dimen/dim_50"
+        android:layout_height="@dimen/dim_50"
         android:layout_margin="@dimen/dim_16"
         app:cardCornerRadius="@dimen/dim_70"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,10 +28,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dim_16"
-        android:layout_marginTop="@dimen/dim_8"
         android:textSize="18sp"
         android:textStyle="bold"
-        tools:text="Ankit Kumar"
+        tools:text="Username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/displayPictureContainer"
@@ -63,7 +62,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/black"
+        android:background="@color/color_b8bbc7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

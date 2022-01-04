@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/splashScreenTheme">
+        android:theme="@style/Theme.SecureChatApplication">
         <activity
             android:name=".MainActivity"
             android:exported="true">

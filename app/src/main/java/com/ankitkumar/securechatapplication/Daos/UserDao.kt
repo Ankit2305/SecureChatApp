@@ -14,8 +14,6 @@ class UserDao {
         user?.let {
             GlobalScope.launch (Dispatchers.IO){
                 userCollection.document(user.uid).set(it)
-
-
             }
 
         }

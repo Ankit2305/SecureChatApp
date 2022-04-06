@@ -10,11 +10,15 @@ import android.widget.Toast
 import androidx.navigation.findNavController
 import com.ankitkumar.securechatapplication.Daos.UserDao
 import com.ankitkumar.securechatapplication.databinding.FragmentSignInBinding
+import com.ankitkumar.securechatapplication.keyExchangeProtocol.GenerateKeyBundle
 import com.ankitkumar.securechatapplication.model.User
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
+import com.ankitkumar.securechatapplication.util.IDENTITY_KEY
+import com.ankitkumar.securechatapplication.util.PreferenceHelper
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -144,12 +148,25 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 binding.etName.text.toString(),
                 binding.etPhoneNumber.text.toString()
             )
+            val identityKey = UUID.nameUUIDFromBytes(user.uid.toByteArray()).mostSignificantBits
             val sharedPref = activity?.getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE) ?: return
             with (sharedPref.edit()) {
                 putString(AUTH_CODE,user.uid)
+                putLong(IDENTITY_KEY, identityKey)
                 apply()
             }
 
+            val generateKeyBundle = GenerateKeyBundle(identityKey)
+            val curveParams = PreferenceHelper.getCurveParams(requireContext())
+            val keyBundles  = generateKeyBundle.generateKeyBundleAtInstall(curveParams.first, curveParams.second)
+
+            PreferenceHelper.saveKeyBundle(keyBundles, requireContext())
+
+            TODO("Saave public-keyBundle to server and SharedPrefs")
+            //New user logIn , create Identity Key , SignedPreKey , and 5 One-timePreKeys , store them in DB
+            //Identity key -> AUTH_CODE
+            //SignedPrekey , generate one at login , update this every week
+            // One-time prekeys, check if all empty , create 5 of them
             UserDao().addUser(user)
             view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
         }

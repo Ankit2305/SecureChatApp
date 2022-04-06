@@ -1,9 +1,12 @@
 package com.ankitkumar.securechatapplication.network
 
 import android.content.Context
+import android.provider.Settings
 import android.util.Log
 import com.ankitkumar.securechatapplication.R
+import com.ankitkumar.securechatapplication.SecureChatApplication
 import com.ankitkumar.securechatapplication.crypto.AES
+import com.ankitkumar.securechatapplication.keyExchangeProtocol.DiffieHellmanKeyExchange
 import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
 import com.ankitkumar.securechatapplication.repository.ChatRepository
@@ -16,6 +19,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.*
+import java.math.BigInteger
+import java.security.Key
+import java.security.MessageDigest
+import java.security.SecureRandom
+import javax.crypto.KeyGenerator
 
 class WebSocketWrapper(val repository: ChatRepository) {
     private lateinit var webSocket: WebSocket
@@ -34,6 +42,8 @@ class WebSocketWrapper(val repository: ChatRepository) {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 isConnected = true
                 connectionInProgress = false
+                checkForReceivedMessages()
+                performKeyExchange()
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -46,6 +56,44 @@ class WebSocketWrapper(val repository: ChatRepository) {
             }
         })
         //connectionService()
+    }
+
+    private fun checkForReceivedMessages() {
+        TODO("check for messages received while USEr is offline")
+
+    }
+
+    private fun performKeyExchange() {
+        if(isSessionAlreadyBuilt){
+            return
+        }else{
+            val receiverKeyBundle : List<Long> = getKeyBundleFromServer()
+            val identityKey = PreferenceHelper.getIdentityKey(SecureChatApplication.applicationContext())
+            val signedPreKey = PreferenceHelper.getSignedPreKey(SecureChatApplication.applicationContext())
+            val curveParams = PreferenceHelper.getCurveParams(SecureChatApplication.applicationContext())
+
+            val dh1 = DiffieHellmanKeyExchange.computeCommonSecretKey(identityKey, receiverKeyBundle[1], curveParams.second)
+            val dh2 = DiffieHellmanKeyExchange.computeCommonSecretKey(signedPreKey, receiverKeyBundle[0], curveParams.second)
+            val dh3 = DiffieHellmanKeyExchange.computeCommonSecretKey(signedPreKey, receiverKeyBundle[1], curveParams.second)
+
+            //after X3DH we'll compute common secret key to encrypt and decrypt message
+            val concatenate = dh1.toString() + dh2.toString() + dh3.toString()
+            val key = concatenate.hashCode()
+
+            //share keys with receiver
+            val identityKeyPublic = PreferenceHelper.getIdentityKeyPublic(SecureChatApplication.applicationContext())
+            val signedPreKeyPublic = PreferenceHelper.getSignedPreKeyPublic(SecureChatApplication.applicationContext())
+            val keyList = listOf(identityKeyPublic, signedPreKeyPublic, receiverKeyBundle[1])
+            shareKeyBundleWithReceiver()
+        }
+    }
+
+    private fun getKeyBundleFromServer(): List<Long> {
+        TODO("Not yet implemented")
+    }
+
+    private fun shareKeyBundleWithReceiver() {
+        TODO("Not yet implemented")
     }
 
 

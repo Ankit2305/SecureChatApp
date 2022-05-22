@@ -1,32 +1,19 @@
 package com.ankitkumar.securechatapplication
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatBinding
-import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
-import com.ankitkumar.securechatapplication.network.GsonHelper
-import com.ankitkumar.securechatapplication.network.WebSocketHelper
-import com.ankitkumar.securechatapplication.util.AUTH_CODE
 import com.ankitkumar.securechatapplication.util.MessageType
 import com.ankitkumar.securechatapplication.util.PreferenceHelper
 import com.ankitkumar.securechatapplication.viewmodel.ChatViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.Response
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import org.koin.android.ext.android.inject
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 

@@ -32,7 +32,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         mAuth = FirebaseAuth.getInstance()
 
         if(mAuth.currentUser!=null){
-            view.findNavController().navigate(R.id.action_signInFragment_to_chatListFragment)
+            view.findNavController().navigate(R.id.action_signInFragment_to_tabSwitchFragment)
         }
         setViewClickListener()
 
@@ -151,7 +151,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
             }
 
             UserDao().addUser(user)
-            view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
+            view?.findNavController()?.navigate(R.id.action_signInFragment_to_tabSwitchFragment)
         }
     }
 

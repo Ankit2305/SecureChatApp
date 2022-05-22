@@ -67,4 +67,10 @@ class ChatListFragment: Fragment(R.layout.fragment_chat_list) {
         chatListAdapter.stopListening()
     }
 
+    companion object{
+        fun newInstance(): ChatFragment {
+            return ChatFragment()
+        }
+    }
+
 }

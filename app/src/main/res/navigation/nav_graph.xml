@@ -20,9 +20,6 @@
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in" >
         <action
-            android:id="@+id/action_signInFragment_to_chatListFragment"
-            app:destination="@id/chatListFragment" />
-        <action
             android:id="@+id/action_signInFragment_to_tabSwitchFragment"
             app:destination="@id/tabSwitchFragment" />
     </fragment>

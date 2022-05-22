@@ -13,6 +13,7 @@
             android:name="user"
             app:argType="com.ankitkumar.securechatapplication.model.User" />
     </fragment>
+
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.ankitkumar.securechatapplication.SignInFragment"
@@ -21,7 +22,11 @@
         <action
             android:id="@+id/action_signInFragment_to_chatListFragment"
             app:destination="@id/chatListFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_tabSwitchFragment"
+            app:destination="@id/tabSwitchFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/chatListFragment"
         android:name="com.ankitkumar.securechatapplication.ChatListFragment"
@@ -31,5 +36,16 @@
             android:id="@+id/action_chatListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/tabSwitchFragment"
+        android:name="com.ankitkumar.securechatapplication.TabSwitchFragment"
+        android:label="fragment_tab_switch"
+        tools:layout="@layout/fragment_tab_switch">
+
+
+    </fragment>
+
+
 
 </navigation>

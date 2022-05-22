@@ -7,73 +7,103 @@
     tools:context="SignInFragment"
     android:layout_margin="10dp">
 
-    <!--Edittext for getting users Name-->
-    <EditText
-        android:id="@+id/et_Name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:hint="Enter your name"
-        android:importantForAutofill="yes"
-        android:inputType="text" />
 
-    <!--Edittext for getting users phone number-->
-    <EditText
-        android:id="@+id/et_PhoneNumber"
+    <LinearLayout
+        android:id="@+id/loginDetailContainer"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:hint="Enter your phone"
-        android:importantForAutofill="no"
-        android:layout_below="@id/et_Name"
-        android:inputType="phone" />
+        android:orientation="vertical"
+        >
+        <EditText
+            android:id="@+id/et_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/message_edit_text_background"
+            android:hint="Username"
+            android:importantForAutofill="yes"
+            android:inputType="text"
+            android:textAlignment="center" />
 
-    <!--Button for getting OTP-->
-    <Button
-        android:id="@+id/btn_GetOtp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_PhoneNumber"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Get OTP"
-        android:textAllCaps="false" />
+        <!--Edittext for getting users phone number-->
+        <EditText
+            android:id="@+id/et_PhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_Name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/message_edit_text_background"
+            android:hint="Mobile Number"
+            android:importantForAutofill="no"
+            android:inputType="phone"
+            android:textAlignment="center" />
 
-    <!--Edittext for getting otp from user-->
-    <EditText
-        android:id="@+id/et_Otp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_GetOtp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:hint="Enter OTP"
-        android:importantForAutofill="no"
-        android:inputType="phone" />
+        <!--Button for getting OTP-->
+        <Button
+            android:id="@+id/btn_GetOtp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_PhoneNumber"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/send_button_background"
+            android:text="Continue"
+            android:textAllCaps="false" />
 
-    <!--button for verifying user OTP-->
-    <Button
-        android:id="@+id/btn_Verify"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/otpContainer"
+        android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/et_Otp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Verify OTP"
-        android:textAllCaps="false" />
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
+
+        <!--Edittext for getting otp from user-->
+        <EditText
+            android:id="@+id/et_Otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_GetOtp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Enter OTP"
+            android:textAlignment="center"
+            android:background="@drawable/message_edit_text_background"
+            android:importantForAutofill="no"
+            android:inputType="phone" />
+
+        <!--button for verifying user OTP-->
+        <Button
+            android:id="@+id/btn_Verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_Otp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/send_button_background"
+            android:text="Verify OTP"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

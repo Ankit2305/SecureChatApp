@@ -5,6 +5,7 @@ import android.util.Log
 import com.ankitkumar.securechatapplication.R
 import com.ankitkumar.securechatapplication.crypto.AES
 import com.ankitkumar.securechatapplication.model.Auth
+import com.ankitkumar.securechatapplication.model.FeedBack
 import com.ankitkumar.securechatapplication.model.Message
 import com.ankitkumar.securechatapplication.repository.ChatRepository
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
@@ -34,6 +35,7 @@ class WebSocketWrapper(val repository: ChatRepository) {
             override fun onOpen(webSocket: WebSocket, response: Response) {
                 isConnected = true
                 connectionInProgress = false
+                Log.i("DebugTag", "onOpen: ")
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
@@ -43,6 +45,7 @@ class WebSocketWrapper(val repository: ChatRepository) {
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
                 isConnected = false
                 connectionInProgress = false
+                Log.i("DebugTag", "onFailure: ")
             }
         })
         //connectionService()
@@ -71,6 +74,7 @@ class WebSocketWrapper(val repository: ChatRepository) {
             webSocketScope.launch {
                 message?.let {
                     repository.insertMessage(message)
+                    send(FeedBack(chatId = encryptedMessage.chatId))
                 }
             }
         } catch (e: Exception) {
@@ -86,6 +90,13 @@ class WebSocketWrapper(val repository: ChatRepository) {
             send(json)
             message.setAsSendMessage()
             repository.insertMessage(message)
+        }
+    }
+
+    fun send(feedBack: FeedBack) {
+        webSocketScope.launch {
+            val json = GsonHelper.getJson(feedBack)
+            send(json)
         }
     }
 

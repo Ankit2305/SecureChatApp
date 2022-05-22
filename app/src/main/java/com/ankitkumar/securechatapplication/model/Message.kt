@@ -15,7 +15,7 @@ data class Message(
     val id: String,
     val text: String,
     var received: Boolean = true,
-    val to : String,  // TODO  : rename it to "receiver"
+    val to : String,  // TODO  : rename it to "receiver" -- don't change, changing to receiver may lead to bugs
     val sender: String,
     val timeStamp: Long = System.currentTimeMillis()
 ) {

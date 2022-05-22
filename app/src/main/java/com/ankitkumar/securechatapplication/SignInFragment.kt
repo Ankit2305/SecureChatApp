@@ -81,6 +81,7 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
     private fun setViewClickListener() {
 
         binding.btnGetOtp.setOnClickListener {
+            showOtpInput()
             val mobilNo = binding.etPhoneNumber.text
             val name = binding.etName.text
             if(mobilNo.isNotEmpty() && mobilNo.length==10 && name.isNotEmpty()){
@@ -100,6 +101,13 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 verifyOtp(otpEntered)
             else
                 Toast.makeText(context,"Please enter OTP",Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showOtpInput() {
+        binding.apply {
+            otpContainer.visibility = View.VISIBLE
+            loginDetailContainer.visibility = View.GONE
         }
     }
 

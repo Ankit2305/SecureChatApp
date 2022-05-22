@@ -3,6 +3,7 @@ package com.ankitkumar.securechatapplication.util
 const val WEB_SOCKET_URL = "wss://secure-chat-application.herokuapp.com/"
 //const val WEB_SOCKET_URL = "ws://192.168.2.171:3000/"
 const val AUTH_CODE = "authCode"
+const val USER_ID = "userId"
 
 //TODO Use key sharing
 const val KEY = "SomeKey"
@@ -14,4 +15,5 @@ const val KEY = "SomeKey"
 object MessageType{
     const val MESSAGE = 2000
     const val AUTH = 1000
+    const val FEEDBACK = 3000
 }

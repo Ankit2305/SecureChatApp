@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class User(
-    val uid : String ="",
-    val name : String= "",
-    val phoneNo : String=""
-): Parcelable, Chat(uid, name)
+data class Group(
+    val groupTitle: String,
+    val members: List<User>
+): Parcelable

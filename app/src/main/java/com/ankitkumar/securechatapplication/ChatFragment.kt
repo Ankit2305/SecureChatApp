@@ -69,7 +69,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                         messageText,
                         true,
                         receiverAuth!!,
-                        PreferenceHelper.getUserId(requireContext())
+                        PreferenceHelper.getAuthCode(requireContext())
                     )
                     sendMessage(message)
                 }

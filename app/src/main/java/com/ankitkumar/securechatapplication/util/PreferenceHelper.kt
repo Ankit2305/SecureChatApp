@@ -11,5 +11,9 @@ object PreferenceHelper {
         return authCode ?: ""
     }
 
-    fun getUserId(context: Context): String = getAuthCode(context)
+    fun getUserId(context: Context): String {
+        val sharedPreferences = context.getSharedPreferences(context.getString(R.string.app_name),Context.MODE_PRIVATE)
+        val userId = sharedPreferences?.getString(USER_ID, "")
+        return userId ?: ""
+    }
 }

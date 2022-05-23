@@ -12,6 +12,10 @@
         <argument
             android:name="user"
             app:argType="com.ankitkumar.securechatapplication.model.User" />
+
+        <argument
+            android:name="group"
+            app:argType="com.ankitkumar.securechatapplication.model.Group"/>
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -30,6 +34,10 @@
         <action
             android:id="@+id/action_chatListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+
+        <action
+            android:id="@+id/group_action_chatListFragment_to_chatFragment"
+            app:destination="@id/chatFragment"/>
     </fragment>
 
 </navigation>

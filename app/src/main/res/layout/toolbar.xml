@@ -23,6 +23,7 @@
             android:layout_width="@dimen/dim_35"
             android:layout_height="@dimen/dim_35"
             android:src="@drawable/icon_display_picture"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

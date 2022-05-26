@@ -4,29 +4,17 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
 import com.ankitkumar.securechatapplication.databinding.FragmentChatBinding
-import com.ankitkumar.securechatapplication.model.Auth
 import com.ankitkumar.securechatapplication.model.Message
-import com.ankitkumar.securechatapplication.network.GsonHelper
-import com.ankitkumar.securechatapplication.network.WebSocketHelper
-import com.ankitkumar.securechatapplication.util.AUTH_CODE
 import com.ankitkumar.securechatapplication.util.MessageType
 import com.ankitkumar.securechatapplication.util.PreferenceHelper
 import com.ankitkumar.securechatapplication.viewmodel.ChatViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import okhttp3.Response
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import org.koin.android.ext.android.inject
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ChatFragment : Fragment(R.layout.fragment_chat) {
 
@@ -34,6 +22,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     lateinit var chatAdapter: ChatAdapter
     lateinit var receiverAuth : String
     val viewModel by inject<ChatViewModel>()
+    var isGroupChat = false
 
     companion object {
         private const val TAG = "ChatFragmentTag"
@@ -45,10 +34,19 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
 
         val args by navArgs<ChatFragmentArgs>()
         val user = args.user
+        val group = args.group
 
-        bindings.toolbar.titleTextView.text = user.name
-        bindings.toolbar.subTitleTextView.text = user.phoneNo
-        receiverAuth = user.uid
+        if(user.uid.isNotBlank()) {
+            bindings.toolbar.titleTextView.text = user.name
+            bindings.toolbar.subTitleTextView.text = user.phoneNo
+            receiverAuth = user.uid
+        }else{
+            bindings.toolbar.titleTextView.text = group.name
+            bindings.toolbar.subTitleTextView.text = "${group.members.size} members"
+            bindings.toolbar.logoImageView.setImageResource(R.drawable.ic_group)
+            receiverAuth = group.groupId
+            isGroupChat = true
+        }
 
         chatAdapter = ChatAdapter()
 
@@ -64,12 +62,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                 messageEditText.setText("")
                 if(messageText.isNotBlank() && receiverAuth!=null) {
                     val message = Message(
-                        MessageType.MESSAGE,
+                        if(isGroupChat) MessageType.GROUP_MESSAGE else MessageType.MESSAGE,
                         UUID.randomUUID().toString(),
                         messageText,
                         true,
                         receiverAuth!!,
-                        PreferenceHelper.getAuthCode(requireContext())
+                        if(isGroupChat) receiverAuth else PreferenceHelper.getUserId(requireContext())
                     )
                     sendMessage(message)
                 }

@@ -22,6 +22,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
     lateinit var chatAdapter: ChatAdapter
     lateinit var receiverAuth : String
     val viewModel by inject<ChatViewModel>()
+    var isGroupChat = false
 
     companion object {
         private const val TAG = "ChatFragmentTag"
@@ -44,6 +45,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             bindings.toolbar.subTitleTextView.text = "${group.members.size} members"
             bindings.toolbar.logoImageView.setImageResource(R.drawable.ic_group)
             receiverAuth = group.groupId
+            isGroupChat = true
         }
 
         chatAdapter = ChatAdapter()
@@ -60,12 +62,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                 messageEditText.setText("")
                 if(messageText.isNotBlank() && receiverAuth!=null) {
                     val message = Message(
-                        MessageType.MESSAGE,
+                        if(isGroupChat) MessageType.GROUP_MESSAGE else MessageType.MESSAGE,
                         UUID.randomUUID().toString(),
                         messageText,
                         true,
                         receiverAuth!!,
-                        PreferenceHelper.getUserId(requireContext())
+                        if(isGroupChat) receiverAuth else PreferenceHelper.getUserId(requireContext())
                     )
                     sendMessage(message)
                 }

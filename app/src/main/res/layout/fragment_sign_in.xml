@@ -7,6 +7,32 @@
     tools:context="SignInFragment"
     android:layout_margin="10dp">
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/testLoginContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/authCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_4"
+            android:background="@drawable/message_edit_text_background"
+            android:hint="AuthCode for login"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/loginWithoutAuthCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dim_4"
+            android:background="@drawable/send_button_background"
+            android:text="Login Without Auth" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
 
     <LinearLayout
         android:id="@+id/loginDetailContainer"

@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Group(
-    val groupTitle: String,
-    val members: List<User>
+    val name: String = "",
+    val groupId: String = "",
+    val members: List<String> = emptyList()
 ): Parcelable

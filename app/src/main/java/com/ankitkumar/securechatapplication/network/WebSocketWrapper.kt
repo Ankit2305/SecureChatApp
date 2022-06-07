@@ -74,7 +74,7 @@ class WebSocketWrapper(val repository: ChatRepository) {
             webSocketScope.launch {
                 message?.let {
                     repository.insertMessage(message)
-                    send(FeedBack(chatId = encryptedMessage.chatId))
+                    //send(FeedBack(chatId = encryptedMessage.chatId))
                 }
             }
         } catch (e: Exception) {
@@ -117,7 +117,7 @@ class WebSocketWrapper(val repository: ChatRepository) {
     }
 
     fun close() {
-        webSocket.close(123, "Closing connection...")
+        webSocket.close(1000, "Closing connection...")
     }
 
     fun connectionService() {

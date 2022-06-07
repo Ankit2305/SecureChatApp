@@ -67,14 +67,16 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                         messageText,
                         true,
                         receiverAuth!!,
-                        if(isGroupChat) receiverAuth else PreferenceHelper.getUserId(requireContext())
+                        PreferenceHelper.getAuthCode(requireContext()),
+                        senderName = PreferenceHelper.getUserName(requireContext()),
+                        isGroupMessage = isGroupChat
                     )
                     sendMessage(message)
                 }
             }
         }
 
-        viewModel.getMessagesWithUser(receiverAuth).observe(viewLifecycleOwner) {
+        viewModel.getMessagesWithUser(receiverAuth, isGroupChat).observe(viewLifecycleOwner) {
             val messages = ArrayList(it).apply {
                 reverse()
             }

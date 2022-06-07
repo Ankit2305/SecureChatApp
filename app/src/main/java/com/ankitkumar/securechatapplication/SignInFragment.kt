@@ -12,6 +12,9 @@ import com.ankitkumar.securechatapplication.Daos.UserDao
 import com.ankitkumar.securechatapplication.databinding.FragmentSignInBinding
 import com.ankitkumar.securechatapplication.model.User
 import com.ankitkumar.securechatapplication.util.AUTH_CODE
+import com.ankitkumar.securechatapplication.util.BuildConstants
+import com.ankitkumar.securechatapplication.util.BuildConstants.testUserName
+import com.ankitkumar.securechatapplication.util.PreferenceHelper
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -30,6 +33,21 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentSignInBinding.bind(view)
         mAuth = FirebaseAuth.getInstance()
+
+        binding.apply {
+            if(BuildConstants.isDebug) {
+                testLoginContainer.visibility = View.VISIBLE
+                authCode.setText(BuildConstants.testAuthCode)
+                loginWithoutAuthCode.setOnClickListener {
+                    val testAuthCode = authCode.text.toString()
+                    PreferenceHelper.setAuthCode(requireContext(), testAuthCode)
+                    PreferenceHelper.setUserName(requireContext(), testUserName)
+                    view.findNavController().navigate(R.id.action_signInFragment_to_chatListFragment)
+                }
+            } else {
+                testLoginContainer.visibility = View.GONE
+            }
+        }
 
         if(mAuth.currentUser!=null){
             view.findNavController().navigate(R.id.action_signInFragment_to_chatListFragment)
@@ -152,12 +170,8 @@ class SignInFragment : Fragment(R.layout.fragment_sign_in) {
                 binding.etName.text.toString(),
                 binding.etPhoneNumber.text.toString()
             )
-            val sharedPref = activity?.getSharedPreferences(resources.getString(R.string.app_name),Context.MODE_PRIVATE) ?: return
-            with (sharedPref.edit()) {
-                putString(AUTH_CODE,user.uid)
-                apply()
-            }
-
+            PreferenceHelper.setAuthCode(requireContext(), user.uid)
+            PreferenceHelper.setUserName(requireContext(), user.name)
             UserDao().addUser(user)
             view?.findNavController()?.navigate(R.id.action_signInFragment_to_chatListFragment)
         }

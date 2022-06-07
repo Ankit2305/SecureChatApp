@@ -7,8 +7,7 @@ import com.ankitkumar.securechatapplication.util.MessageType
 data class EncryptedMessage(
     val type: Int = MessageType.MESSAGE,
     val to: String,
-    val encryptedData: String,
-    val chatId: String
+    val encryptedData: String
 ) {
     fun toMessage(): Message? {
         val json = AES.decrypt(encryptedData) ?: ""

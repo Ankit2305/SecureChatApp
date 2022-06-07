@@ -7,11 +7,11 @@ import kotlinx.coroutines.*
 
 class ChatRepository(val database: ChatDatabase) {
 
-    suspend fun getMessagesForSender(senderId: String): LiveData<List<Message>> {
+    suspend fun getMessagesForSender(senderId: String, isGroupChat: Boolean): LiveData<List<Message>> {
         lateinit var messages: LiveData<List<Message>>
         coroutineScope {
             withContext(Dispatchers.IO) {
-                messages = database.messageDao().getMessages(senderId)
+                messages = database.messageDao().getMessages(senderId, isGroupChat)
             }
         }
         return messages
@@ -19,7 +19,9 @@ class ChatRepository(val database: ChatDatabase) {
 
     suspend fun insertMessage(message: Message) {
         withContext(Dispatchers.IO) {
-            database.messageDao().insertMessage(message)
+            if(database.messageDao().containsMessage(message.id) == 0) {
+                database.messageDao().insertMessage(message)
+            }
         }
     }
 

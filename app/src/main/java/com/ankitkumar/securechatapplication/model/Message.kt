@@ -17,6 +17,8 @@ data class Message(
     var received: Boolean = true,
     val to : String,  // TODO  : rename it to "receiver" -- don't change, changing to receiver may lead to bugs
     val sender: String,
+    val senderName: String,
+    val isGroupMessage: Boolean,
     val timeStamp: Long = System.currentTimeMillis()
 ) {
     fun setAsSendMessage() {

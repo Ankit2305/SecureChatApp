@@ -44,6 +44,12 @@ class ChatAdapter:
     inner class ReceiveViewHolder(val bindings: SingleReceiveChatItemBinding): BaseViewHolder(bindings.root) {
         override fun bind(message: Message) {
             bindings.apply {
+                if(message.isGroupMessage && message.senderName.isNotBlank()) {
+                    senderName.text = message.senderName
+                    senderName.visibility = View.VISIBLE
+                } else {
+                    senderName.visibility = View.GONE
+                }
                 messageTextView.text = message.text
             }
         }

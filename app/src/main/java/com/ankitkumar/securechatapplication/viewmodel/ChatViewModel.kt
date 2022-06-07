@@ -14,7 +14,7 @@ class ChatViewModel(val repository: ChatRepository, val webSocket: WebSocketWrap
         webSocket.send(message)
     }
 
-    fun getMessagesWithUser(userId: String) = runBlocking {
-        repository.getMessagesForSender(userId)
+    fun getMessagesWithUser(userId: String, isGroupChat: Boolean) = runBlocking {
+        repository.getMessagesForSender(userId, isGroupChat)
     }
 }

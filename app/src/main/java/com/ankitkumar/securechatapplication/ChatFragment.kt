@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
@@ -44,6 +45,10 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             bindings.toolbar.titleTextView.text = group.name
             bindings.toolbar.subTitleTextView.text = "${group.members.size} members"
             bindings.toolbar.logoImageView.setImageResource(R.drawable.ic_group)
+            bindings.toolbar.root.setOnClickListener {
+                val action = ChatFragmentDirections.actionChatFragmentToGroupDetailFragment(group.groupId)
+                findNavController().navigate(action)
+            }
             receiverAuth = group.groupId
             isGroupChat = true
         }

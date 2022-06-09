@@ -11,8 +11,9 @@ import com.ankitkumar.securechatapplication.R
 import com.ankitkumar.securechatapplication.databinding.SingleReceiveChatItemBinding
 import com.ankitkumar.securechatapplication.databinding.SingleSendChatItemBinding
 import com.ankitkumar.securechatapplication.model.Message
+import com.bumptech.glide.Glide
 
-class ChatAdapter:
+class ChatAdapter(val previewImageCallback: (String) -> Unit):
     ListAdapter<Message, ChatAdapter.BaseViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -50,7 +51,18 @@ class ChatAdapter:
                 } else {
                     senderName.visibility = View.GONE
                 }
-                messageTextView.text = message.text
+                if(message.isImage) {
+                    messageTextView.visibility = View.GONE
+                    imageContainer.visibility = View.VISIBLE
+                    Glide.with(root).load(message.text).into(imageView)
+                    imageContainer.setOnClickListener {
+                        previewImageCallback.invoke(message.text)
+                    }
+                } else {
+                    messageTextView.visibility = View.VISIBLE
+                    imageContainer.visibility = View.GONE
+                    messageTextView.text = message.text
+                }
             }
         }
     }
@@ -58,7 +70,18 @@ class ChatAdapter:
     inner class SendViewHolder(val bindings: SingleSendChatItemBinding): BaseViewHolder(bindings.root) {
         override fun bind(message: Message) {
             bindings.apply {
-                messageTextView.text = message.text
+                if(message.isImage) {
+                    messageTextView.visibility = View.GONE
+                    imageContainer.visibility = View.VISIBLE
+                    Glide.with(root).load(message.text).into(imageView)
+                    imageContainer.setOnClickListener {
+                        previewImageCallback.invoke(message.text)
+                    }
+                } else {
+                    messageTextView.visibility = View.VISIBLE
+                    imageContainer.visibility = View.GONE
+                    messageTextView.text = message.text
+                }
             }
         }
     }

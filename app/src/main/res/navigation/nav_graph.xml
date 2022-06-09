@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_chatFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_imagePreviewFragment"
+            app:destination="@id/imagePreviewFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
@@ -52,6 +55,31 @@
         <argument
             android:name="groupId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/imagePreviewFragment"
+        android:name="com.ankitkumar.securechatapplication.ImagePreviewFragment"
+        android:label="fragment_image_preview"
+        tools:layout="@layout/fragment_image_preview" >
+        <argument
+            android:name="imageUri"
+            app:argType="android.net.Uri"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="isGroupChat"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="receiverAuth"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="url"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
 </navigation>

@@ -1,10 +1,12 @@
 package com.ankitkumar.securechatapplication
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ankitkumar.securechatapplication.adapter.ChatAdapter
@@ -44,11 +46,20 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             bindings.toolbar.titleTextView.text = group.name
             bindings.toolbar.subTitleTextView.text = "${group.members.size} members"
             bindings.toolbar.logoImageView.setImageResource(R.drawable.ic_group)
+            bindings.toolbar.root.setOnClickListener {
+                val action = ChatFragmentDirections.actionChatFragmentToGroupDetailFragment(group.groupId)
+                findNavController().navigate(action)
+            }
             receiverAuth = group.groupId
             isGroupChat = true
         }
 
-        chatAdapter = ChatAdapter()
+        chatAdapter = ChatAdapter() { url ->
+            val action = ChatFragmentDirections.actionChatFragmentToImagePreviewFragment().apply {
+                this.url = url
+            }
+            findNavController().navigate(action)
+        }
 
         bindings.apply {
             chatRecyclerView.setHasFixedSize(true)
@@ -61,18 +72,19 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
                 val messageText = messageEditText.text.toString().trim()
                 messageEditText.setText("")
                 if(messageText.isNotBlank() && receiverAuth!=null) {
-                    val message = Message(
-                        if(isGroupChat) MessageType.GROUP_MESSAGE else MessageType.MESSAGE,
-                        UUID.randomUUID().toString(),
-                        messageText,
-                        true,
-                        receiverAuth!!,
-                        PreferenceHelper.getAuthCode(requireContext()),
-                        senderName = PreferenceHelper.getUserName(requireContext()),
-                        isGroupMessage = isGroupChat
-                    )
+                    val message = messageBuilder(messageText)
                     sendMessage(message)
                 }
+            }
+            addAttachMent.setOnClickListener {
+                if(activity is MainActivity) {
+                    val mainActivity = activity as? MainActivity
+                    mainActivity?.let {
+                        it.fragment = this@ChatFragment
+                        it.showFileSelector()
+                    }
+                }
+
             }
         }
 
@@ -84,6 +96,22 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
             chatAdapter.submitList(messages)
         }
 
+
+
+    }
+
+    private fun messageBuilder(text: String): Message {
+        return Message(
+            if(isGroupChat) MessageType.GROUP_MESSAGE else MessageType.MESSAGE,
+            UUID.randomUUID().toString(),
+            text,
+            true,
+            receiverAuth!!,
+            PreferenceHelper.getAuthCode(requireContext()),
+            senderName = PreferenceHelper.getUserName(requireContext()),
+            isGroupMessage = isGroupChat,
+            isImage = false
+        )
     }
 
     private fun sendMessage(message: Message) {
@@ -94,4 +122,28 @@ class ChatFragment : Fragment(R.layout.fragment_chat) {
         Log.i(TAG, "showLogs: $message")
     }
 
+    fun handleFileUri(uri: Uri?) {
+        uri?.let {
+            val action = ChatFragmentDirections.actionChatFragmentToImagePreviewFragment().apply {
+                this.isGroupChat = this@ChatFragment.isGroupChat
+                this.receiverAuth = this@ChatFragment.receiverAuth
+                this.imageUri = it
+            }
+            findNavController().navigate(action)
+        }
+    }
+}
+
+fun String.toMessage(isGroupChat: Boolean, context: Context, receiverAuth: String, isImage: Boolean): Message{
+    return Message(
+        if(isGroupChat) MessageType.GROUP_MESSAGE else MessageType.MESSAGE,
+        UUID.randomUUID().toString(),
+        this,
+        true,
+        receiverAuth,
+        PreferenceHelper.getAuthCode(context),
+        senderName = PreferenceHelper.getUserName(context),
+        isGroupMessage = isGroupChat,
+        isImage = isImage
+    )
 }

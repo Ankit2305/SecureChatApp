@@ -20,13 +20,13 @@
         android:id="@+id/chatRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:itemCount="5"
-        tools:listitem="@layout/single_receive_chat_item"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/sendContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:itemCount="5"
+        tools:listitem="@layout/single_receive_chat_item" />
 
     <LinearLayout
         android:id="@+id/sendContainer"
@@ -50,6 +50,16 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:id="@+id/addAttachMent"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/send_button_background"
+            android:padding="@dimen/dim_8"
+            android:layout_marginHorizontal="4dp"
+            android:src="@drawable/ic_attachment" />
+
+        <ImageView
             android:id="@+id/sendButton"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -60,5 +70,6 @@
             android:src="@drawable/ic_send" />
 
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

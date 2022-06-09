@@ -19,6 +19,7 @@ data class Message(
     val sender: String,
     val senderName: String,
     val isGroupMessage: Boolean,
+    val isImage: Boolean,
     val timeStamp: Long = System.currentTimeMillis()
 ) {
     fun setAsSendMessage() {

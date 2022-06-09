@@ -2,10 +2,12 @@ package com.ankitkumar.securechatapplication.repository
 
 import androidx.lifecycle.LiveData
 import com.ankitkumar.securechatapplication.db.ChatDatabase
+import com.ankitkumar.securechatapplication.model.GroupDetail
 import com.ankitkumar.securechatapplication.model.Message
+import com.ankitkumar.securechatapplication.network.ChatApiService
 import kotlinx.coroutines.*
 
-class ChatRepository(val database: ChatDatabase) {
+class ChatRepository(val database: ChatDatabase, val chatApiService: ChatApiService) {
 
     suspend fun getMessagesForSender(senderId: String, isGroupChat: Boolean): LiveData<List<Message>> {
         lateinit var messages: LiveData<List<Message>>
@@ -33,6 +35,10 @@ class ChatRepository(val database: ChatDatabase) {
             }
         }
         return messageCount
+    }
+
+    suspend fun getGroupById(groupId: String): GroupDetail {
+         return chatApiService.fetchGroupById(groupId)
     }
 
 }

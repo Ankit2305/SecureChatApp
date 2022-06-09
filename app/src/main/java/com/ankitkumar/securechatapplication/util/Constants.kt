@@ -2,6 +2,9 @@ package com.ankitkumar.securechatapplication.util
 
 //const val WEB_SOCKET_URL = "wss://secure-chat-application.herokuapp.com/"
 const val WEB_SOCKET_URL = "ws://192.168.2.171:3000/"
+
+//const val WEB_SOCKET_URL = "https://secure-chat-application.herokuapp.com/"
+const val API_URL = "http://192.168.2.171:3000/"
 const val AUTH_CODE = "authCode"
 const val USER_ID = "userId"
 const val USER_NAME = "userName"

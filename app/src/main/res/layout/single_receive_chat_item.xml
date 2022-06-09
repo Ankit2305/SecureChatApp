@@ -53,6 +53,30 @@
                 android:translationZ="2dp"
                 tools:text="Hello world" />
 
+            <LinearLayout
+                android:id="@+id/imageContainer"
+                android:layout_width="300dp"
+                android:layout_height="225dp"
+                android:visibility="gone"
+                android:padding="@dimen/dim_4">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    app:cardCornerRadius="20dp"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        tools:srcCompat="@tools:sample/avatars"
+                        android:layout_width="match_parent"
+                        android:scaleType="centerCrop"
+                        android:layout_height="match_parent" />
+
+                </androidx.cardview.widget.CardView>
+
+
+            </LinearLayout>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 
